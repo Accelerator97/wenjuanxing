@@ -1,0 +1,27 @@
+{
+  // 启用保存时格式化
+  "editor.formatOnSave": true,
+
+  // 确保使用 Prettier 作为默认的代码格式化工具
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // 以下是针对不同语言的格式化设置，可选
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
