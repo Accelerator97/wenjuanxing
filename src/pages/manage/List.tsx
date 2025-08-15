@@ -5,6 +5,8 @@ import { useSearchParams } from 'react-router-dom';
 import { produce } from 'immer';
 import { Typography, Spin, Empty } from 'antd';
 import { useTitle } from 'ahooks';
+import ListSearch from '../../components/ListSearch';
+
 const rawList = [
   {
     id: '1',
@@ -87,7 +89,7 @@ const List: FC = () => {
           <Title level={3}>我的问卷</Title>
         </div>
         <div className={Styles.right}>
-          <h3>搜索</h3>
+          <ListSearch />
         </div>
       </div>
       <div className={Styles.content}>

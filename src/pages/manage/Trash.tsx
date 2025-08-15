@@ -5,6 +5,7 @@ import { produce } from 'immer';
 import { Typography, Spin, Empty, Table, Tag, Space, Button, Modal } from 'antd';
 import { useTitle } from 'ahooks';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import ListSearch from '../../components/ListSearch';
 const { Title } = Typography;
 const { confirm } = Modal;
 const rawList: any[] = [
@@ -117,7 +118,7 @@ const Trash: FC = () => {
           <Title level={3}>星标问卷</Title>
         </div>
         <div className={Styles.right}>
-          <h3>搜索</h3>
+          <ListSearch />
         </div>
       </div>
       <div className={Styles.content}>
