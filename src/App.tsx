@@ -1,10 +1,11 @@
 import React from 'react';
-import List from './pages/List';
+import { RouterProvider } from 'react-router-dom';
+import routeConfig from './router/index';
 
 function App() {
   return (
     <>
-      <List />
+      <RouterProvider router={routeConfig} />
     </>
   );
 }

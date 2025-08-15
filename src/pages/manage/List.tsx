@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import Styles from './List.module.scss';
-import QuestionCard from '../components/QuestionCard';
+import QuestionCard from '../../components/QuestionCard';
+import { useSearchParams } from 'react-router-dom';
 import { produce } from 'immer';
 
 const rawList = [
@@ -39,6 +40,7 @@ const rawList = [
 ];
 
 const List: FC = () => {
+  const [searchParams] = useSearchParams();
   const [questionList, setQuestionList] = useState(rawList);
 
   function add() {
