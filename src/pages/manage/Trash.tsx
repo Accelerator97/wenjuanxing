@@ -1,7 +1,132 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
+import Styles from './common.module.scss';
+import { useSearchParams } from 'react-router-dom';
+import { produce } from 'immer';
+import { Typography, Spin, Empty, Table, Tag, Space, Button, Modal } from 'antd';
+import { useTitle } from 'ahooks';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+const { Title } = Typography;
+const { confirm } = Modal;
+const rawList: any[] = [
+  {
+    id: '1',
+    title: 'wenuan',
+    isPublished: false,
+    isStar: false,
+    answerCount: 5,
+    createdAt: '3月15日',
+  },
+  {
+    id: '2',
+    title: 'wenuan',
+    isPublished: false,
+    isStar: false,
+    answerCount: 5,
+    createdAt: '3月15日',
+  },
+  {
+    id: '3',
+    title: 'wenuan',
+    isPublished: true,
+    isStar: false,
+    answerCount: 5,
+    createdAt: '3月15日',
+  },
+  {
+    id: '4',
+    title: 'wenuan',
+    isPublished: false,
+    isStar: false,
+    answerCount: 5,
+    createdAt: '3月15日',
+  },
+];
 
 const Trash: FC = () => {
-  return <div>Home</div>;
+  const [questionList, setQuestionList] = useState(rawList);
+  // 记录选中的 id
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  const tableColumns = [
+    {
+      title: '标题',
+      dataIndex: 'title',
+    },
+    {
+      title: '是否发布',
+      dataIndex: 'isPublished',
+      render: (isPublished: boolean) => {
+        return isPublished ? <Tag color="processing">已发布</Tag> : <Tag>未发布</Tag>;
+      },
+    },
+    {
+      title: '答卷',
+      dataIndex: 'answerCount',
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdAt',
+    },
+  ];
+
+  function del() {
+    confirm({
+      title: '确认彻底删除该问卷？',
+      icon: <ExclamationCircleOutlined />,
+      content: '删除以后不可以找回',
+      onOk: () => {
+        alert('shanchu ');
+      },
+    });
+  }
+
+  // 可以把 JSX 片段定义为一个变量
+  const TableElem = (
+    <>
+      <div style={{ marginBottom: '16px' }}>
+        <Space>
+          <Button type="primary" disabled={selectedIds.length === 0}>
+            恢复
+          </Button>
+          <Button danger disabled={selectedIds.length === 0} onClick={del}>
+            彻底删除
+          </Button>
+        </Space>
+      </div>
+      <div style={{ border: '1px solid #e8e8e8' }}>
+        <Table
+          dataSource={questionList}
+          columns={tableColumns}
+          pagination={false}
+          rowKey={q => q.id}
+          rowSelection={{
+            type: 'checkbox',
+            onChange: selectedRowKeys => {
+              setSelectedIds(selectedRowKeys as string[]);
+            },
+          }}
+        />
+      </div>
+    </>
+  );
+
+  return (
+    <>
+      <div className={Styles.header}>
+        <div className={Styles.left}>
+          <Title level={3}>星标问卷</Title>
+        </div>
+        <div className={Styles.right}>
+          <h3>搜索</h3>
+        </div>
+      </div>
+      <div className={Styles.content}>
+        {questionList.length === 0 && <Empty description="暂无数据" />}
+        {questionList.length > 0 && TableElem}
+      </div>
+      <div className={Styles.footer}>分页</div>
+    </>
+  );
 };
 
 export default Trash;

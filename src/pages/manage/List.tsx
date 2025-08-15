@@ -1,15 +1,16 @@
 import React, { FC, useState } from 'react';
-import Styles from './List.module.scss';
+import Styles from './common.module.scss';
 import QuestionCard from '../../components/QuestionCard';
 import { useSearchParams } from 'react-router-dom';
 import { produce } from 'immer';
-
+import { Typography, Spin, Empty } from 'antd';
+import { useTitle } from 'ahooks';
 const rawList = [
   {
     id: '1',
     title: 'wenuan',
     isPublished: false,
-    isStart: false,
+    isStar: false,
     answerCount: 5,
     createdAt: '3月15日',
   },
@@ -17,7 +18,7 @@ const rawList = [
     id: '2',
     title: 'wenuan',
     isPublished: false,
-    isStart: false,
+    isStar: false,
     answerCount: 5,
     createdAt: '3月15日',
   },
@@ -25,7 +26,7 @@ const rawList = [
     id: '3',
     title: 'wenuan',
     isPublished: true,
-    isStart: false,
+    isStar: false,
     answerCount: 5,
     createdAt: '3月15日',
   },
@@ -33,13 +34,16 @@ const rawList = [
     id: '4',
     title: 'wenuan',
     isPublished: false,
-    isStart: false,
+    isStar: false,
     answerCount: 5,
     createdAt: '3月15日',
   },
 ];
 
+const { Title } = Typography;
+
 const List: FC = () => {
+  useTitle('问卷星 - 我的问卷');
   const [searchParams] = useSearchParams();
   const [questionList, setQuestionList] = useState(rawList);
 
@@ -47,7 +51,7 @@ const List: FC = () => {
     setQuestionList(
       produce(draft => {
         draft.push({
-          isStart: false,
+          isStar: false,
           answerCount: 5,
           createdAt: '3月15日',
           id: Math.random() + '',
@@ -80,19 +84,21 @@ const List: FC = () => {
     <>
       <div className={Styles.header}>
         <div className={Styles.left}>
-          <h3>我的问卷</h3>
+          <Title level={3}>我的问卷</Title>
         </div>
         <div className={Styles.right}>
           <h3>搜索</h3>
         </div>
       </div>
       <div className={Styles.content}>
-        {questionList.map(item => {
-          const { id } = item;
-          return <QuestionCard key={id} {...item} editQuestion={edit} />;
-        })}
+        {questionList.length === 0 && <Empty description="暂无数据" />}
+        {questionList.length > 0 &&
+          questionList.map(item => {
+            const { id } = item;
+            return <QuestionCard key={id} {...item} editQuestion={edit} />;
+          })}
       </div>
-      <div className={Styles.footer}>footer</div>
+      <div className={Styles.footer}>加载更多...</div>
     </>
   );
 };
