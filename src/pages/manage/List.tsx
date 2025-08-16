@@ -1,85 +1,31 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Styles from './common.module.scss';
 import QuestionCard from '../../components/QuestionCard';
 import { useSearchParams } from 'react-router-dom';
 import { produce } from 'immer';
 import { Typography, Spin, Empty } from 'antd';
-import { useTitle } from 'ahooks';
+import { useRequest, useTitle } from 'ahooks';
 import ListSearch from '../../components/ListSearch';
-
-const rawList = [
-  {
-    id: '1',
-    title: 'wenuan',
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月15日',
-  },
-  {
-    id: '2',
-    title: 'wenuan',
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月15日',
-  },
-  {
-    id: '3',
-    title: 'wenuan',
-    isPublished: true,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月15日',
-  },
-  {
-    id: '4',
-    title: 'wenuan',
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月15日',
-  },
-];
+import { getQuestionListService } from '../../services/question';
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
 
 const { Title } = Typography;
 
 const List: FC = () => {
   useTitle('问卷星 - 我的问卷');
-  const [searchParams] = useSearchParams();
-  const [questionList, setQuestionList] = useState(rawList);
 
+  const { data = {}, loading } = useLoadQuestionListData();
+  const { list = [], total = 0 } = data;
   function add() {
-    setQuestionList(
-      produce(draft => {
-        draft.push({
-          isStar: false,
-          answerCount: 5,
-          createdAt: '3月15日',
-          id: Math.random() + '',
-          title: 'wenuan',
-          isPublished: false,
-        });
-      })
-    );
+    //
   }
 
   function del(id: string) {
-    setQuestionList(
-      produce(draft => {
-        const index = questionList.findIndex(r => r.id === id);
-        draft.splice(index, 1);
-      })
-    );
+    //
   }
 
   function edit(id: string) {
-    setQuestionList(
-      produce(draft => {
-        const index = questionList.findIndex(r => r.id === id);
-        draft[index].isPublished = true;
-      })
-    );
+    //
   }
 
   return (
@@ -93,9 +39,15 @@ const List: FC = () => {
         </div>
       </div>
       <div className={Styles.content}>
-        {questionList.length === 0 && <Empty description="暂无数据" />}
-        {questionList.length > 0 &&
-          questionList.map(item => {
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin></Spin>
+          </div>
+        )}
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
+        {!loading &&
+          list.length > 0 &&
+          list.map((item: any) => {
             const { id } = item;
             return <QuestionCard key={id} {...item} editQuestion={edit} />;
           })}

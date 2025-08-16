@@ -1,50 +1,16 @@
 import React, { FC, useState } from 'react';
 import Styles from './common.module.scss';
-import { useSearchParams } from 'react-router-dom';
-import { produce } from 'immer';
 import { Typography, Spin, Empty, Table, Tag, Space, Button, Modal } from 'antd';
-import { useTitle } from 'ahooks';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ListSearch from '../../components/ListSearch';
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
 const { Title } = Typography;
 const { confirm } = Modal;
-const rawList: any[] = [
-  {
-    id: '1',
-    title: 'wenuan',
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月15日',
-  },
-  {
-    id: '2',
-    title: 'wenuan',
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月15日',
-  },
-  {
-    id: '3',
-    title: 'wenuan',
-    isPublished: true,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月15日',
-  },
-  {
-    id: '4',
-    title: 'wenuan',
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月15日',
-  },
-];
 
 const Trash: FC = () => {
-  const [questionList, setQuestionList] = useState(rawList);
+  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
+  const { list = [], total = 0 } = data;
+  // const [questionList, setQuestionList] = useState(rawList);
   // 记录选中的 id
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -96,10 +62,10 @@ const Trash: FC = () => {
       </div>
       <div style={{ border: '1px solid #e8e8e8' }}>
         <Table
-          dataSource={questionList}
+          dataSource={list}
           columns={tableColumns}
           pagination={false}
-          rowKey={q => q.id}
+          rowKey={(q: any) => q.id}
           rowSelection={{
             type: 'checkbox',
             onChange: selectedRowKeys => {
@@ -122,8 +88,13 @@ const Trash: FC = () => {
         </div>
       </div>
       <div className={Styles.content}>
-        {questionList.length === 0 && <Empty description="暂无数据" />}
-        {questionList.length > 0 && TableElem}
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin></Spin>
+          </div>
+        )}
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
+        {!loading && list.length > 0 && TableElem}
       </div>
       <div className={Styles.footer}>分页</div>
     </>
