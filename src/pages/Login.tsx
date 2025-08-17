@@ -1,9 +1,12 @@
 import React, { FC, useEffect } from 'react';
-import { Typography, Spin, Empty, Space, Form, Input, Button, Checkbox } from 'antd';
+import { Typography, Spin, Empty, Space, Form, Input, Button, Checkbox, message } from 'antd';
 import styles from './Register.module.scss';
 import { UserAddOutlined } from '@ant-design/icons';
-import { LOGIN_PATHNAME, REGISTER_PATHNAME } from '../router';
-import { Link } from 'react-router-dom';
+import { LOGIN_PATHNAME, MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../router';
+import { Link, useNavigate } from 'react-router-dom';
+import { useRequest } from 'ahooks';
+import { loginService } from '../services/user';
+import { setToken } from '../utils/user-token';
 
 const { Title } = Typography;
 const USERNAME_KEY = 'USERNAME';
@@ -27,12 +30,32 @@ function getUserInfoFromStorage() {
 }
 const Login: FC = () => {
   const [form] = Form.useForm();
+  const nav = useNavigate();
   useEffect(() => {
     const { username, password } = getUserInfoFromStorage();
     form.setFieldsValue({ username, password });
   }, []);
+  const { run } = useRequest(
+    async (username: string, password: string) => {
+      const data = await loginService(username, password);
+      return data;
+    },
+    {
+      manual: true,
+      onSuccess(result) {
+        const { token = '' } = result;
+        setToken(token); // 存储 token
+
+        message.success('登录成功');
+        nav(MANAGE_INDEX_PATHNAME); // 导航到“我的问卷”
+      },
+    }
+  );
   function onFinish(values: any) {
     const { username, password, remember } = values || {};
+
+    run(username, password); // 执行 ajax
+
     if (remember) {
       rememberUser(username, password);
     } else {

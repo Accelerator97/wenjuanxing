@@ -1,14 +1,31 @@
 import React, { FC } from 'react';
-import { Typography, Spin, Empty, Space, Form, Input, Button } from 'antd';
+import { Typography, Spin, Empty, Space, Form, Input, Button, message } from 'antd';
 import styles from './Register.module.scss';
 import { UserAddOutlined } from '@ant-design/icons';
 import { LOGIN_PATHNAME } from '../router';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerService } from '../services/user';
+import { useRequest } from 'ahooks';
 const { Title } = Typography;
 const Register: FC = () => {
-  function onFinish() {
-    //
-  }
+  const nav = useNavigate();
+  const { run } = useRequest(
+    async values => {
+      const { username, password, nickname } = values;
+      await registerService(username, password, nickname);
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('注册成功');
+        nav(LOGIN_PATHNAME); // 跳转到登录页
+      },
+    }
+  );
+
+  const onFinish = (values: any) => {
+    run(values); // 调用 ajax
+  };
   return (
     <>
       <div className={styles.container}>

@@ -95,7 +95,6 @@ const List: FC = () => {
   }
 
   const LoadMoreContentElem = () => {
-    console.log('loading', total, list.length, hasMoreData);
     if (!started || loading) return <Spin />;
     if (total === 0) return <Empty description="暂无数据" />;
     if (!hasMoreData) return <span>没有更多了...</span>;
