@@ -16,8 +16,6 @@ instance.interceptors.response.use(
     const resData = (res.data || {}) as ResType;
     const { errno, data, msg } = resData;
 
-    console.log(`output->resData`, resData);
-
     if (errno !== 0) {
       // 错误提示
       if (msg) {
