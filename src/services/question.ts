@@ -28,3 +28,13 @@ export async function getQuestionListService(
   const data = (await axios.get(url, { params: opt })) as ResDataType;
   return data;
 }
+
+// 更新单个问卷
+export async function updateQuestionService(
+  id: string,
+  opt: { [key: string]: any }
+): Promise<ResDataType> {
+  const url = `/api/updateQuestion/${id}`;
+  const data = (await axios.post(url, opt)) as ResDataType;
+  return data;
+}

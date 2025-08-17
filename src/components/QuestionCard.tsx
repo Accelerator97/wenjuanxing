@@ -10,6 +10,8 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { useRequest } from 'ahooks';
+import { updateQuestionService } from '../services/question';
 
 type PropsType = {
   id: string;
@@ -38,7 +40,18 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
   } = props;
   // 修改 标星
   const [isStarState, setIsStarState] = useState(isStar);
-
+  const { loading: changeStarLoading, run: changeStar } = useRequest(
+    async () => {
+      await updateQuestionService(_id, { isStar: !isStarState });
+    },
+    {
+      manual: true,
+      onSuccess() {
+        setIsStarState(!isStarState); // 更新 state
+        message.success('已更新');
+      },
+    }
+  );
   function del() {
     console.log('xxxx');
     confirm({
@@ -91,7 +104,13 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
         </div>
         <div className={styles.right}>
           <Space>
-            <Button type="text" icon={<StarOutlined />} size="small">
+            <Button
+              type="text"
+              icon={<StarOutlined />}
+              size="small"
+              disabled={changeStarLoading}
+              onClick={changeStar}
+            >
               {isStarState ? '取消标星' : '标星'}
             </Button>
             <Popconfirm title="确定复制该问卷？" okText="确定" cancelText="取消">
