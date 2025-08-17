@@ -1,18 +1,38 @@
 import React, { FC, useState } from 'react';
 import Styles from './common.module.scss';
-import { Typography, Spin, Empty, Table, Tag, Space, Button, Modal } from 'antd';
+import { Typography, Spin, Empty, Table, Tag, Space, Button, Modal, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ListSearch from '../../components/ListSearch';
 import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
 import ListPage from '../../components/ListPage';
+import { updateQuestionService } from '../../services/question';
+import { useRequest } from 'ahooks';
 const { Title } = Typography;
 const { confirm } = Modal;
 
 const Trash: FC = () => {
-  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
+  const { data = {}, loading, refresh } = useLoadQuestionListData({ isDeleted: true });
   const { list = [], total = 0 } = data;
   // 记录选中的 id
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  // 恢复
+  const { run: recover } = useRequest(
+    async () => {
+      for await (const id of selectedIds) {
+        await updateQuestionService(id, { isDeleted: false });
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500, // 防抖
+      onSuccess() {
+        message.success('恢复成功');
+        refresh(); // 手动刷新列表
+        setSelectedIds([]);
+      },
+    }
+  );
 
   const tableColumns = [
     {
@@ -52,7 +72,7 @@ const Trash: FC = () => {
     <>
       <div style={{ marginBottom: '16px' }}>
         <Space>
-          <Button type="primary" disabled={selectedIds.length === 0}>
+          <Button type="primary" disabled={selectedIds.length === 0} onClick={recover}>
             恢复
           </Button>
           <Button danger disabled={selectedIds.length === 0} onClick={del}>
