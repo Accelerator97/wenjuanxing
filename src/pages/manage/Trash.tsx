@@ -5,7 +5,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ListSearch from '../../components/ListSearch';
 import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
 import ListPage from '../../components/ListPage';
-import { updateQuestionService } from '../../services/question';
+import { deleteQuestionsService, updateQuestionService } from '../../services/question';
 import { useRequest } from 'ahooks';
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -34,6 +34,28 @@ const Trash: FC = () => {
     }
   );
 
+  // 删除
+  const { run: deleteQuestion } = useRequest(
+    async () => await deleteQuestionsService(selectedIds),
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功');
+        refresh();
+        setSelectedIds([]);
+      },
+    }
+  );
+
+  function del() {
+    confirm({
+      title: '确认彻底删除该问卷？',
+      icon: <ExclamationCircleOutlined />,
+      content: '删除以后不可以找回',
+      onOk: deleteQuestion,
+    });
+  }
+
   const tableColumns = [
     {
       title: '标题',
@@ -55,17 +77,6 @@ const Trash: FC = () => {
       dataIndex: 'createdAt',
     },
   ];
-
-  function del() {
-    confirm({
-      title: '确认彻底删除该问卷？',
-      icon: <ExclamationCircleOutlined />,
-      content: '删除以后不可以找回',
-      onOk: () => {
-        alert('shanchu ');
-      },
-    });
-  }
 
   // 可以把 JSX 片段定义为一个变量
   const TableElem = (
