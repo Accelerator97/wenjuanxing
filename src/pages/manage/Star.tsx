@@ -1,10 +1,11 @@
 import React, { FC, useState } from 'react';
 import Styles from './common.module.scss';
 import QuestionCard from '../../components/QuestionCard';
-import { Typography, Spin, Empty } from 'antd';
+import { Typography, Spin, Empty, Pagination } from 'antd';
 import { useTitle } from 'ahooks';
 import ListSearch from '../../components/ListSearch';
 import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
+import ListPage from '../../components/ListPage';
 
 const { Title } = Typography;
 
@@ -41,7 +42,9 @@ const List: FC = () => {
             return <QuestionCard key={id} {...item} editQuestion={edit} />;
           })}
       </div>
-      <div className={Styles.footer}>分页</div>
+      <div className={Styles.footer}>
+        <ListPage total={total}></ListPage>
+      </div>
     </>
   );
 };

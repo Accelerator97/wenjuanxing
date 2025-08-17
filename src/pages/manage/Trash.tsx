@@ -4,13 +4,13 @@ import { Typography, Spin, Empty, Table, Tag, Space, Button, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ListSearch from '../../components/ListSearch';
 import useLoadQuestionListData from '../../hooks/useLoadQuestionListData';
+import ListPage from '../../components/ListPage';
 const { Title } = Typography;
 const { confirm } = Modal;
 
 const Trash: FC = () => {
   const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
   const { list = [], total = 0 } = data;
-  // const [questionList, setQuestionList] = useState(rawList);
   // 记录选中的 id
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -96,7 +96,9 @@ const Trash: FC = () => {
         {!loading && list.length === 0 && <Empty description="暂无数据" />}
         {!loading && list.length > 0 && TableElem}
       </div>
-      <div className={Styles.footer}>分页</div>
+      <div className={Styles.footer}>
+        <ListPage total={total}></ListPage>
+      </div>
     </>
   );
 };
