@@ -23,7 +23,6 @@ function useNavPage(waitingUserData: boolean) {
       }
       return;
     }
-
     // 未登
     if (isNoNeedUserInfo(pathname)) {
       return;

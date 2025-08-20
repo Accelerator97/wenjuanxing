@@ -5,8 +5,10 @@ import { UserAddOutlined } from '@ant-design/icons';
 import { LOGIN_PATHNAME, MANAGE_INDEX_PATHNAME, REGISTER_PATHNAME } from '../router';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRequest } from 'ahooks';
-import { loginService } from '../services/user';
+import { getUserInfoService, loginService } from '../services/user';
 import { setToken } from '../utils/user-token';
+import { loginReducer } from '../store/userReducer';
+import { useDispatch } from 'react-redux';
 
 const { Title } = Typography;
 const USERNAME_KEY = 'USERNAME';
@@ -31,21 +33,26 @@ function getUserInfoFromStorage() {
 const Login: FC = () => {
   const [form] = Form.useForm();
   const nav = useNavigate();
+
+  const dispatch = useDispatch();
   useEffect(() => {
     const { username, password } = getUserInfoFromStorage();
     form.setFieldsValue({ username, password });
   }, []);
   const { run } = useRequest(
     async (username: string, password: string) => {
+      // todo 串行
       const data = await loginService(username, password);
-      return data;
+      const info = await getUserInfoService();
+      return { ...data, ...info };
     },
     {
       manual: true,
-      onSuccess(result) {
-        const { token = '' } = result;
+      onSuccess: result => {
+        const { token = '', username, nickname } = result;
         setToken(token); // 存储 token
         message.success('登录成功');
+        dispatch(loginReducer({ username, nickname })); // 存储到 redux store
         nav(MANAGE_INDEX_PATHNAME); // 导航到“我的问卷”
       },
     }
