@@ -45,7 +45,6 @@ const Login: FC = () => {
       onSuccess(result) {
         const { token = '' } = result;
         setToken(token); // 存储 token
-
         message.success('登录成功');
         nav(MANAGE_INDEX_PATHNAME); // 导航到“我的问卷”
       },
@@ -53,9 +52,7 @@ const Login: FC = () => {
   );
   function onFinish(values: any) {
     const { username, password, remember } = values || {};
-
     run(username, password); // 执行 ajax
-
     if (remember) {
       rememberUser(username, password);
     } else {

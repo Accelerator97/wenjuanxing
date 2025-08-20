@@ -8,17 +8,6 @@ import { useRequest } from 'ahooks';
 const MainLayout: FC = () => {
   const nav = useNavigate();
   const { pathname } = useLocation();
-  // const [loading, setLoading] = useState(false);
-  // async function handleCreateClick() {
-  //   setLoading(true);
-  //   const data = await createQuestionService();
-  //   const { id } = data || {};
-  //   if (id) {
-  //     nav(`/question/edit/${id}`);
-  //     message.success('创建成功');
-  //   }
-  //   setLoading(false);
-  // }
 
   const { loading, run: handleCreateClick } = useRequest(createQuestionService, {
     manual: true,

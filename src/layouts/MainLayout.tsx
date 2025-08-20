@@ -2,12 +2,16 @@ import React, { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import styles from './MainLayout.module.scss';
 
-import { Layout } from 'antd';
+import { Layout, Spin } from 'antd';
 import Logo from '../components/Logo';
 import UserInfo from '../components/UserInfo';
+import useLoadUseData from '../hooks/useLoadUserData';
+import useNavPage from '../hooks/useNavPage';
 const { Header, Content, Footer } = Layout;
 
 const MainLayout: FC = () => {
+  const { waitingUserData } = useLoadUseData();
+  useNavPage(waitingUserData);
   return (
     <>
       <div className={styles.pageWrapper}>
@@ -20,7 +24,13 @@ const MainLayout: FC = () => {
           </div>
         </Header>
         <Content className={styles.main}>
-          <Outlet />
+          {waitingUserData ? (
+            <div style={{ textAlign: 'center', marginTop: '60px' }}>
+              <Spin />
+            </div>
+          ) : (
+            <Outlet />
+          )}
         </Content>
         <Footer className={styles.footer}>问卷星 &copy;2025-present. Created By Ben</Footer>
       </div>
