@@ -4,7 +4,6 @@ import { getQuestionService } from '../services/question';
 import { useRequest } from 'ahooks';
 import { useDispatch } from 'react-redux';
 import { resetComponents } from '../store/componentReducer';
-
 function useLoadQuestionData() {
   const { id = '' } = useParams();
   const dispatch = useDispatch();
@@ -24,8 +23,12 @@ function useLoadQuestionData() {
   useEffect(() => {
     if (!data) return;
     const { title, componentList } = data;
+    let selectedId = '';
+    if (componentList.length > 0) {
+      selectedId = componentList[0].fe_id;
+    }
     // componentList 存入到redux
-    dispatch(resetComponents({ componentList }));
+    dispatch(resetComponents({ componentList, selectedId }));
   }, [data]);
 
   useEffect(() => {
