@@ -27,7 +27,6 @@ function useNavPage(waitingUserData: boolean) {
     if (isNoNeedUserInfo(pathname)) {
       return;
     } else {
-      console.log(`output->重新导航登陆 `);
       nav(LOGIN_PATHNAME);
     }
   }, [waitingUserData, username, pathname]);

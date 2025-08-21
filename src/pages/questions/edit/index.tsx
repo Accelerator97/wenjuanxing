@@ -2,22 +2,27 @@ import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getQuestionService } from '../../../services/question';
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData';
+import styles from './index.module.scss';
+import EditCanvas from './EditCanvas';
 
 const Edit: FC = () => {
-  // const { id = '' } = useParams();
-  // const [loading, setLoading] = useState(true);
-  // const [qData, setQdata] = useState({});
-  // useEffect(() => {
-  //   const fn = async () => {
-  //     const data = await getQuestionService(id);
-  //     console.log('edit data', data);
-  //     setQdata(data);
-  //     setLoading(false);
-  //   };
-  //   fn();
-  // }, []);
   const { loading, data } = useLoadQuestionData();
-  return <div>{loading ? '加载中' : JSON.stringify(data)}</div>;
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}> header</div>
+      <div className={styles['content-wrapper']}>
+        <div className={styles.content}>
+          <div className={styles.left}>left</div>
+          <div className={styles.main}>
+            <div className={styles['canvas-wrapper']}>
+              <EditCanvas loading={loading}></EditCanvas>
+            </div>
+          </div>
+          <div className={styles.right}>right</div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Edit;

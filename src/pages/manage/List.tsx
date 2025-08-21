@@ -65,7 +65,6 @@ const List: FC = () => {
 
       // 4. 如果元素可见，执行加载更多操作
       if (isVisible) {
-        // console.log('加载更多...');
         // 可以在这里执行获取下一页数据的逻辑
         load();
         setStarted(true);
