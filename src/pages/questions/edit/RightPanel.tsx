@@ -16,13 +16,9 @@ const RightPanel: FC = () => {
   const { selectedId } = useGetComponentInfo();
 
   useEffect(() => {
-    // if (selectedId) setActiveKey(TAB_KEYS.PROP_KEY);
-    // else setActiveKey(TAB_KEYS.SETTING_KEY);
+    if (selectedId) setActiveKey(TAB_KEYS.PROP_KEY);
+    else setActiveKey(TAB_KEYS.SETTING_KEY);
   }, [selectedId]);
-
-  useEffect(() => {
-    console.log('fuck ', activeKey);
-  }, [activeKey]);
 
   const tabsItems = [
     {
