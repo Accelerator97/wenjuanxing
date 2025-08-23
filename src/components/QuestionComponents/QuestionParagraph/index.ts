@@ -1,0 +1,12 @@
+export * from './interface';
+import PropComponent from './PropComponent';
+import Component from './Component';
+import { QuestionParagraphDefaultProps } from './interface';
+
+export default {
+  title: '段落',
+  type: 'questionParagraph',
+  Component,
+  defaultProps: QuestionParagraphDefaultProps,
+  PropComponent,
+};
