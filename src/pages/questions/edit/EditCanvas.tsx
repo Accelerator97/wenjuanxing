@@ -6,6 +6,7 @@ import { getComponentConfByType } from '../../../components/QuestionComponents';
 import { changeSelectedId, ComponentInfoType } from '../../../store/componentReducer';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
+import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress';
 
 type PropsType = {
   loading: boolean;
@@ -26,6 +27,7 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
     event.stopPropagation(); // 阻止冒泡
     dispatch(changeSelectedId(id));
   }
+  useBindCanvasKeyPress();
   if (loading)
     return (
       <div style={{ textAlign: 'center', marginTop: '24px' }}>
