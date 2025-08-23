@@ -28,7 +28,7 @@ function useLoadQuestionData() {
       selectedId = componentList[0].fe_id;
     }
     // componentList 存入到redux
-    dispatch(resetComponents({ componentList, selectedId }));
+    dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }));
   }, [data]);
 
   useEffect(() => {

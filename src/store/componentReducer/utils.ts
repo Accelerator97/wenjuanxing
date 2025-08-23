@@ -1,10 +1,10 @@
-import { ComponentInfoType, ComponentStateType } from './index';
+import { ComponentInfoType, ComponentsStateType } from './index';
 /**
  * 插入新组件
  * @param draft state draft
  * @param newComponent 新组件
  */
-export function insertNewComponent(draft: ComponentStateType, newComponent: ComponentInfoType) {
+export function insertNewComponent(draft: ComponentsStateType, newComponent: ComponentInfoType) {
   const { selectedId, componentList } = draft;
   const index = componentList.findIndex(c => c.fe_id === selectedId);
 
