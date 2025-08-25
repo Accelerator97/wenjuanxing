@@ -4,6 +4,7 @@ import { FileTextOutlined, SettingOutlined } from '@ant-design/icons';
 import ComponentProp from './ComponentProp';
 // import PageSetting from './PageSetting';
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo';
+import PageSetting from './PageSetting';
 
 // TS 枚举
 enum TAB_KEYS {
@@ -39,8 +40,7 @@ const RightPanel: FC = () => {
           页面设置
         </span>
       ),
-      //   children: <PageSetting />,
-      children: <div>234</div>,
+      children: <PageSetting />,
     },
   ];
 
