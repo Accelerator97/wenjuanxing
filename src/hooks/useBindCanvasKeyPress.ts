@@ -8,7 +8,7 @@ import {
   selectNextComponent,
   selectPrevComponent,
 } from '../store/componentReducer';
-
+import { ActionCreators as UndoActionCreators } from 'redux-undo';
 /**
  * 判断 activeElem 是否合法
  */
@@ -52,6 +52,24 @@ function useBindCanvasKeyPress() {
   useKeyPress('downarrow', () => {
     if (!isActiveElementValid()) return;
     dispatch(selectNextComponent());
+  });
+
+  // 撤销
+  useKeyPress(
+    ['ctrl.z', 'meta.z'],
+    () => {
+      if (!isActiveElementValid()) return;
+      dispatch(UndoActionCreators.undo());
+    },
+    {
+      exactMatch: true, // 严格匹配
+    }
+  );
+
+  // 重做
+  useKeyPress(['ctrl.shift.z', 'meta.shift.z'], () => {
+    if (!isActiveElementValid()) return;
+    dispatch(UndoActionCreators.redo());
   });
 }
 

@@ -3,7 +3,9 @@ import { StateType } from '../store';
 import { ComponentsStateType } from '../store/componentReducer';
 function useGetComponentInfo() {
   // 获取redux里的数据
-  const components = useSelector<StateType>(state => state.components) as ComponentsStateType;
+  const components = useSelector<StateType>(
+    state => state.components.present
+  ) as ComponentsStateType;
   const { componentList, selectedId, copiedComponent } = components;
   const selectedComponent = componentList.find(c => c.fe_id === selectedId);
   return { componentList, selectedId, selectedComponent, copiedComponent };
