@@ -21,8 +21,14 @@
 
     .left {
         width: 295px;
+        height: calc(100vh - 50px - 24px);
+        overflow-y: scroll;
         background-color: #fff;
         padding: 0 12px;
+
+        &:scroll-bar{
+            display: none;
+        }
     }
 
     .main {
