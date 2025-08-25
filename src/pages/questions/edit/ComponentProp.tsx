@@ -13,7 +13,6 @@ const ComponentProp: FC = () => {
   const dispatch = useDispatch();
   if (selectedComponent == null) return <NoProp />;
   const { type, props, isLocked, isHidden } = selectedComponent;
-  console.log('props===', props);
   const componentConf = getComponentConfByType(type);
   if (componentConf == null) return <NoProp />;
   const { PropComponent } = componentConf;
