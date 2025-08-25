@@ -4,13 +4,16 @@ import {
   BlockOutlined,
   CopyOutlined,
   DeleteOutlined,
+  DownOutlined,
   EyeInvisibleOutlined,
   LockOutlined,
+  UpOutlined,
 } from '@ant-design/icons';
 import { useDispatch, UseDispatch } from 'react-redux';
 import {
   changeComponentHidden,
   copySelectedComponent,
+  moveComponent,
   pasteCopiedComponent,
   removeSelectedComponent,
   toggleComponentLocked,
@@ -19,13 +22,12 @@ import useGetComponentInfo from '../../../hooks/useGetComponentInfo';
 
 const EditToolBar: FC = () => {
   const dispatch = useDispatch();
-  const {
-    selectedId,
-    selectedComponent,
-    copiedComponent,
-    // componentList,
-  } = useGetComponentInfo();
+  const { selectedId, selectedComponent, copiedComponent, componentList } = useGetComponentInfo();
   const { isLocked } = selectedComponent || {};
+  const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId);
+  const isFirst = selectedIndex <= 0; // 第一个
+  const isLast = selectedIndex + 1 >= componentList.length; // 最后一个
+
   function handleDelete() {
     dispatch(removeSelectedComponent());
   }
@@ -45,6 +47,18 @@ const EditToolBar: FC = () => {
 
   function paste() {
     dispatch(pasteCopiedComponent());
+  }
+
+  // 上移
+  function moveUp() {
+    if (isFirst) return;
+    dispatch(moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex - 1 }));
+  }
+
+  // 下移
+  function moveDown() {
+    if (isLast) return;
+    dispatch(moveComponent({ oldIndex: selectedIndex, newIndex: selectedIndex + 1 }));
   }
 
   return (
@@ -75,6 +89,18 @@ const EditToolBar: FC = () => {
           icon={<BlockOutlined />}
           onClick={paste}
           disabled={copiedComponent == null}
+        ></Button>
+      </Tooltip>
+
+      <Tooltip title="上移">
+        <Button shape="circle" icon={<UpOutlined />} onClick={moveUp} disabled={isFirst}></Button>
+      </Tooltip>
+      <Tooltip title="下移">
+        <Button
+          shape="circle"
+          icon={<DownOutlined />}
+          onClick={moveDown}
+          disabled={isLast}
         ></Button>
       </Tooltip>
     </Space>
