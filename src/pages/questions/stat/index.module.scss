@@ -6,13 +6,16 @@
 }
 
 .content-wrapper {
-    flex: auto;
+    flex: 1;
     padding: 12px 0;
+    display: flex;
 }
 
 .content {
     margin: 0 24px;
     display: flex;
+    flex: 1;
+    
 
     .left {
         width: 350px;

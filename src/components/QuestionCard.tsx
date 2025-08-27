@@ -14,7 +14,7 @@ import { useRequest } from 'ahooks';
 import { duplicateQuestionService, updateQuestionService } from '../services/question';
 
 type PropsType = {
-  id: string;
+  _id: string;
   title: string;
   isPublished: boolean;
   createdAt: string;
@@ -26,7 +26,7 @@ const { confirm } = Modal;
 
 const QuestionCard: FC<PropsType> = (props: PropsType) => {
   const nav = useNavigate();
-  const { id: _id, title, isPublished, createdAt, answerCount, isStar } = props;
+  const { _id, title, isPublished, createdAt, answerCount, isStar } = props;
   // 修改 标星
   const [isStarState, setIsStarState] = useState(isStar);
   const { loading: changeStarLoading, run: changeStar } = useRequest(

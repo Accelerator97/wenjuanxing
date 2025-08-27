@@ -2,7 +2,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import { getToken } from '../utils/user-token';
 
-const base = `http://127.0.0.1:4523/m1/6958385-6675535-default`;
+const base = `http://127.0.0.1:3001/`;
 
 const instance = axios.create({
   timeout: 60 * 10000,
