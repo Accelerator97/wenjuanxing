@@ -9,9 +9,13 @@ import { changeSelectedId } from '../../../store/componentReducer';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 import EditHeader from './EditHeader';
+import useGetPageInfo from '../../../hooks/useGetPageInfo';
+import { useTitle } from 'ahooks';
 const Edit: FC = () => {
   const { loading, data } = useLoadQuestionData();
+  const { title } = useGetPageInfo();
   const dispatch = useDispatch();
+  useTitle(`问卷编辑 - ${title}`);
   function clearSelectedId() {
     dispatch(changeSelectedId(''));
   }

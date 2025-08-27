@@ -4,6 +4,7 @@ import { getQuestionService } from '../services/question';
 import { useRequest } from 'ahooks';
 import { useDispatch } from 'react-redux';
 import { resetComponents } from '../store/componentReducer';
+import { resetPageInfo } from '../store/pageInfoReducer';
 function useLoadQuestionData() {
   const { id = '' } = useParams();
   const dispatch = useDispatch();
@@ -22,13 +23,23 @@ function useLoadQuestionData() {
 
   useEffect(() => {
     if (!data) return;
-    const { title, componentList } = data;
+    const {
+      title = '',
+      desc = '',
+      js = '',
+      css = '',
+      isPublished = false,
+      componentList = [],
+    } = data;
     let selectedId = '';
     if (componentList.length > 0) {
       selectedId = componentList[0].fe_id;
     }
     // componentList 存入到redux
     dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }));
+
+    // 把 pageInfo 存储到 redux store
+    dispatch(resetPageInfo({ title, desc, js, css, isPublished }));
   }, [data]);
 
   useEffect(() => {
